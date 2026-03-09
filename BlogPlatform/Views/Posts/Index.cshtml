@@ -1,0 +1,39 @@
+﻿@model List<BlogPlatform.Models.Post>
+
+@{
+    ViewData["Title"] = "All Posts";
+}
+
+<h2>Blog Posts</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <a href="/Posts/Create" class="btn btn-primary mb-3">Write a New Post</a>
+}
+
+@if (Model.Count == 0)
+{
+    <p>No posts yet.</p>
+}
+
+@foreach (var post in Model)
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">@post.Title</h5>
+            <p class="card-text text-muted">
+                By @post.Author.UserName on @post.CreatedAt.ToString("dd MMM yyyy")
+            </p>
+            <p class="card-text">
+                @if (post.Body.Length > 150)
+                {
+                    @(post.Body.Substring(0, 150) + "...")
+                }
+                else
+                {
+                    @post.Body
+                }
+            </p>
+        </div>
+    </div>
+}
