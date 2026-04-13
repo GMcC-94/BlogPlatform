@@ -13,6 +13,11 @@ namespace BlogPlatform.Controllers
             _context = context;
         }
 
+        /*
+         * @params none
+         * @returns ViewResult with a list of all posts ordered by date descending,
+         *          including each post's author
+         */
         public async Task<IActionResult> Index()
         {
             var posts = await _context.Posts
@@ -24,7 +29,11 @@ namespace BlogPlatform.Controllers
             return View(posts); ;
         }
 
-       
+        /*
+         * @params int id - the ID of the post to retrieve
+         * @returns ViewResult with the Post model including author and comments,
+         *          or NotFoundResult if the post does not exist
+         */
         public async Task<IActionResult> Details(int id)
         {
             var post = await _context.Posts
