@@ -90,5 +90,35 @@ namespace BlogPlatform.Tests
             
             Assert.IsType<NotFoundResult>(result);
         }
+
+        [Fact]
+        public void Create_Get_ReturnsViewResult()
+        {
+            
+            using var context = GetInMemoryContext();
+            var controller = new PostsController(context);
+
+           
+            var result = controller.Create();
+
+            
+            Assert.IsType<ViewResult>(result);
+        }
+
+      
+        [Fact]
+        public async Task Create_Post_ReturnsViewResult_WhenTitleOrBodyIsEmpty()
+        {
+            
+            using var context = GetInMemoryContext();
+            var controller = new PostsController(context);
+
+            
+            var result = await controller.Create("", "");
+
+            
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.False(controller.ModelState.IsValid);
+        }
     }
 }
