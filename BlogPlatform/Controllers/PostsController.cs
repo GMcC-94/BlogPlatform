@@ -1,4 +1,6 @@
 ﻿using BlogPlatform.Data;
+using BlogPlatform.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,6 +47,38 @@ namespace BlogPlatform.Controllers
             if (post == null) return NotFound();
 
             return View(post);
+        }
+
+       
+        [Authorize]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(string title, string body)
+        {
+            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(body))
+            {
+                ModelState.AddModelError("", "Title and body are required.");
+                return View();
+            }
+
+            var post = new Post
+            {
+                Title = title,
+                Body = body,
+                CreatedAt = DateTime.UtcNow,
+                AuthorId = _context.Users.First(u => u.UserName == User.Identity!.Name).Id
+            };
+
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
