@@ -49,13 +49,24 @@ namespace BlogPlatform.Controllers
             return View(post);
         }
 
-       
+        /*
+         * @params none
+         * @returns ViewResult for the Create form,
+         *          redirects to login if user is not authenticated
+         */
         [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
+        /*
+         * @params string title - the title of the post
+         *         string body - the body content of the post
+         * @returns RedirectToActionResult to Index on success,
+         *          ViewResult with validation errors if title or body are empty,
+         *          redirects to login if user is not authenticated
+         */
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
