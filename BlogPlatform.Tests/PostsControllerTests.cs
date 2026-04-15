@@ -1,9 +1,11 @@
 ﻿using BlogPlatform.Controllers;
 using BlogPlatform.Data;
 using BlogPlatform.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BlogPlatform.Tests
 {
@@ -16,6 +18,23 @@ namespace BlogPlatform.Tests
                 .Options;
 
             return new ApplicationDbContext(options);
+        }
+
+        private PostsController CreateControllerWitUser(ApplicationDbContext context, string userName)
+        {
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, userName)
+            }, "mockUser"));
+
+            var controller = new PostsController(context)
+            {
+                ControllerContext = new ControllerContext
+                {
+                    HttpContext = new DefaultHttpContext { User = user }
+                }
+            };
+            return controller;
         }
 
         [Fact]
@@ -34,7 +53,7 @@ namespace BlogPlatform.Tests
             );
             await context.SaveChangesAsync();
 
-            var controller = new PostsController(context);
+            var controller = CreateControllerWitUser(context, "testuser");
 
             
             var result = await controller.Index();
