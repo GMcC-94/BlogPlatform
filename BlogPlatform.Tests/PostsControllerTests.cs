@@ -350,5 +350,136 @@ namespace BlogPlatform.Tests
             
             Assert.IsType<ForbidResult>(result);
         }
+
+        /*
+         * @params int id - the ID of the post to delete
+         * @returns ViewResult with the Post model when the current user is the author
+         */
+        [Fact]
+        public async Task Delete_Get_ReturnsViewResult_WhenUserIsAuthor()
+        {
+            using var context = GetInMemoryContext();
+            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            context.Users.Add(author);
+            context.Posts.Add(new Post
+            {
+                Id = 1,
+                Title = "Test Post",
+                Body = "Test Body",
+                CreatedAt = DateTime.UtcNow,
+                AuthorId = "user1"
+            });
+            await context.SaveChangesAsync();
+            var controller = CreateControllerWithUser(context, "testuser", "user1");
+            var result = await controller.Delete(1);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsType<Post>(viewResult.Model);
+            Assert.Equal(1, model.Id);
+            Assert.Equal("Test Post", model.Title);
+        }
+
+        /*
+         * @params int id - an ID that does not exist in the database
+         * @returns NotFoundResult when post does not exist
+         */
+        [Fact]
+        public async Task Delete_Get_ReturnsNotFound_WhenPostDoesNotExist()
+        {
+            using var context = GetInMemoryContext();
+            var controller = CreateControllerWithUser(context, "testuser", "user1");
+            var result = await controller.Delete(999);
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        /*
+         * @params int id - the ID of a post owned by a different user
+         * @returns ForbidResult when the current user is not the author
+         */
+        [Fact]
+        public async Task Delete_Get_ReturnsForbid_WhenUserIsNotAuthor()
+        {
+            using var context = GetInMemoryContext();
+            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var otherUser = new IdentityUser { Id = "user2", UserName = "otheruser" };
+            context.Users.AddRange(author, otherUser);
+            context.Posts.Add(new Post
+            {
+                Id = 1,
+                Title = "Test Post",
+                Body = "Test Body",
+                CreatedAt = DateTime.UtcNow,
+                AuthorId = "user1"
+            });
+            await context.SaveChangesAsync();
+            var controller = CreateControllerWithUser(context, "otheruser", "user2");
+            var result = await controller.Delete(1);
+            Assert.IsType<ForbidResult>(result);
+        }
+
+        /*
+         * @params int id - the ID of the post to delete
+         * @returns RedirectToActionResult to Index and post is removed from the database
+         */
+        [Fact]
+        public async Task DeleteConfirmed_DeletesPostAndRedirectsToIndex_WhenUserIsAuthor()
+        {
+            using var context = GetInMemoryContext();
+            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            context.Users.Add(author);
+            context.Posts.Add(new Post
+            {
+                Id = 1,
+                Title = "Test Post",
+                Body = "Test Body",
+                CreatedAt = DateTime.UtcNow,
+                AuthorId = "user1"
+            });
+            await context.SaveChangesAsync();
+            var controller = CreateControllerWithUser(context, "testuser", "user1");
+            var result = await controller.DeleteConfirmed(1);
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+            var deletedPost = await context.Posts.FindAsync(1);
+            Assert.Null(deletedPost);
+        }
+
+        /*
+         * @params int id - an ID that does not exist in the database
+         * @returns NotFoundResult when post does not exist
+         */
+        [Fact]
+        public async Task DeleteConfirmed_ReturnsNotFound_WhenPostDoesNotExist()
+        {
+            using var context = GetInMemoryContext();
+            var controller = CreateControllerWithUser(context, "testuser", "user1");
+            var result = await controller.DeleteConfirmed(999);
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        /*
+         * @params int id - the ID of a post owned by a different user
+         * @returns ForbidResult when the current user is not the author
+         */
+        [Fact]
+        public async Task DeleteConfirmed_ReturnsForbid_WhenUserIsNotAuthor()
+        {
+            using var context = GetInMemoryContext();
+            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var otherUser = new IdentityUser { Id = "user2", UserName = "otheruser" };
+            context.Users.AddRange(author, otherUser);
+            context.Posts.Add(new Post
+            {
+                Id = 1,
+                Title = "Test Post",
+                Body = "Test Body",
+                CreatedAt = DateTime.UtcNow,
+                AuthorId = "user1"
+            });
+            await context.SaveChangesAsync();
+            var controller = CreateControllerWithUser(context, "otheruser", "user2");
+            var result = await controller.DeleteConfirmed(1);
+            Assert.IsType<ForbidResult>(result);
+        }
     }
+
 }
