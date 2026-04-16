@@ -91,5 +91,13 @@ namespace BlogPlatform.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        /*
+        * Helper method for getting the current user ID 
+        */
+        private string GetCurrentUserId()
+        {
+            return _context.Users.First(u => u.UserName == User.Identity!.Name).Id;
+        }
     }
 }
