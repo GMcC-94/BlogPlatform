@@ -92,6 +92,38 @@ namespace BlogPlatform.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null) return NotFound();
+            if (post.AuthorId != GetCurrentUserId()) return Forbid();
+
+            return View(post);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, string title, string body)
+        {
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null) return NotFound();
+            if (post.AuthorId != GetCurrentUserId()) return Forbid();
+
+            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(body))
+            {
+                ModelState.AddModelError("", "Title and body are required.");
+                return View(post);
+            }
+
+            post.Title = title;
+            post.Body = body;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         /*
         * Helper method for getting the current user ID 
         */
