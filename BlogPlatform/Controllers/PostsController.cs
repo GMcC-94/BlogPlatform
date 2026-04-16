@@ -3,6 +3,7 @@ using BlogPlatform.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BlogPlatform.Controllers
 {
@@ -129,7 +130,7 @@ namespace BlogPlatform.Controllers
         */
         private string GetCurrentUserId()
         {
-            return _context.Users.First(u => u.UserName == User.Identity!.Name).Id;
+            return User.FindFirstValue(ClaimTypes.NameIdentifier)!;
         }
     }
 }
