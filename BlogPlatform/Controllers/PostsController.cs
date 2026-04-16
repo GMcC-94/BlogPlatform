@@ -126,6 +126,47 @@ namespace BlogPlatform.Controllers
         }
 
         /*
+         * @params int id - the ID of the post to delete
+         * @returns ViewResult with the Post model if the current user is the author,
+         *          NotFoundResult if the post does not exist,
+         *          ForbidResult if the current user is not the author
+         */
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var post = await _context.Posts
+                .Include(p => p.Author)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (post == null) return NotFound();
+            if (post.AuthorId != GetCurrentUserId()) return Forbid();
+
+            return View(post);
+        }
+
+        /*
+         * @params int id - the ID of the post to delete
+         * @returns RedirectToActionResult to Index on success,
+         *          NotFoundResult if the post does not exist,
+         *          ForbidResult if the current user is not the author
+         */
+        [HttpPost, ActionName("Delete")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var post = await _context.Posts.FindAsync(id);
+
+            if (post == null) return NotFound();
+            if (post.AuthorId != GetCurrentUserId()) return Forbid();
+
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        /*
         * Helper method for getting the current user ID 
         */
         private string GetCurrentUserId()
