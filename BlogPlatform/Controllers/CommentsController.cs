@@ -50,7 +50,7 @@ namespace BlogPlatform.Controllers
 
 
         /*
-         * @params int id - the ID of the comment to edit
+          * @params int id - the ID of the comment to edit
          *         string body - updated comment text
          * @returns RedirectToActionResult to Posts/Details on success,
          *          NotFoundResult if comment does not exist,
@@ -69,6 +69,27 @@ namespace BlogPlatform.Controllers
                 return RedirectToAction("Details", "Posts", new { id = comment.PostId });
 
             comment.Body = body;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Posts", new { id = comment.PostId });
+        }
+
+        /*
+         * @params int id - the ID of the comment to delete
+         * @returns RedirectToActionResult to Posts/Details on success,
+         *          NotFoundResult if comment does not exist,
+         *          ForbidResult if current user is not the author
+         */
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment == null) return NotFound();
+            if (comment.AuthorId != User.FindFirstValue(ClaimTypes.NameIdentifier)) return Forbid();
+
+            _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Details", "Posts", new { id = comment.PostId });

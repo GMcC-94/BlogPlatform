@@ -112,5 +112,59 @@ namespace BlogPlatform.Tests
             var commentCount = await context.Comments.CountAsync();
             Assert.Equal(0, commentCount);
         }
+
+        /*
+         * @params int id - comment ID, string body - updated text
+         * @returns RedirectToActionResult to Posts/Details and comment is updated
+         */
+        [Fact]
+        public async Task Edit_UpdatesCommentAndRedirectsToDetails_WhenUserIsAuthor()
+        {
+            using var context = GetInMemoryContext();
+            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            context.Users.Add(author);
+            context.Posts.Add(new Post { Id = 1, Title = "Test Post", Body = "Test Body", CreatedAt = DateTime.UtcNow, AuthorId = "user1" });
+            context.Comments.Add(new Comment { Id = 1, Body = "Old Comment", CreatedAt = DateTime.UtcNow, AuthorId = "user1", PostId = 1 });
+            await context.SaveChangesAsync();
+            var controller = CreateControllerWithUser(context, "testuser", "user1");
+            var result = await controller.Edit(1, "New Comment");
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Details", redirect.ActionName);
+            Assert.Equal("Posts", redirect.ControllerName);
+            var updatedComment = await context.Comments.FindAsync(1);
+            Assert.Equal("New Comment", updatedComment!.Body);
+        }
+
+        /*
+         * @params int id - comment ID that does not exist
+         * @returns NotFoundResult when comment does not exist
+         */
+        [Fact]
+        public async Task Edit_ReturnsNotFound_WhenCommentDoesNotExist()
+        {
+            using var context = GetInMemoryContext();
+            var controller = CreateControllerWithUser(context, "testuser", "user1");
+            var result = await controller.Edit(999, "New Comment");
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        /*
+         * @params int id - comment ID owned by different user
+         * @returns ForbidResult when current user is not the author
+         */
+        [Fact]
+        public async Task Edit_ReturnsForbid_WhenUserIsNotAuthor()
+        {
+            using var context = GetInMemoryContext();
+            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var otherUser = new IdentityUser { Id = "user2", UserName = "otheruser" };
+            context.Users.AddRange(author, otherUser);
+            context.Posts.Add(new Post { Id = 1, Title = "Test Post", Body = "Test Body", CreatedAt = DateTime.UtcNow, AuthorId = "user1" });
+            context.Comments.Add(new Comment { Id = 1, Body = "Test Comment", CreatedAt = DateTime.UtcNow, AuthorId = "user1", PostId = 1 });
+            await context.SaveChangesAsync();
+            var controller = CreateControllerWithUser(context, "otheruser", "user2");
+            var result = await controller.Edit(1, "New Comment");
+            Assert.IsType<ForbidResult>(result);
+        }
     }
 }
