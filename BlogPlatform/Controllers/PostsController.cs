@@ -93,6 +93,12 @@ namespace BlogPlatform.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /*
+         * @params int id - the ID of the post to edit
+         * @returns ViewResult with the Post model if the current user is the author,
+         *          NotFoundResult if the post does not exist,
+         *          ForbidResult if the current user is not the author
+         */
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
@@ -103,6 +109,15 @@ namespace BlogPlatform.Controllers
             return View(post);
         }
 
+        /*
+         * @params int id - the ID of the post to edit
+         *         string title - the updated title
+         *         string body - the updated body content
+         * @returns RedirectToActionResult to Index on success,
+         *          NotFoundResult if the post does not exist,
+         *          ForbidResult if the current user is not the author,
+         *          ViewResult with validation errors if title or body are empty
+         */
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
