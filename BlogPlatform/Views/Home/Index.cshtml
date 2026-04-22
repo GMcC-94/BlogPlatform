@@ -1,8 +1,131 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "HOME";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row mt-4">
+    <div class="col-12">
+
+
+        <div style="background:var(--teletext-cyan); color:var(--teletext-black); padding: 0.5rem 1rem; margin-bottom: 0.2rem;">
+            <span style="font-size:2rem; letter-spacing:4px; text-transform:uppercase;">
+                &#9608;&#9608; WELCOME TO TELETEXT BLOG &#9608;&#9608;
+            </span>
+        </div>
+        <div style="background:var(--teletext-yellow); color:var(--teletext-black); padding: 0.2rem 1rem; margin-bottom: 1.5rem; font-size:1.2rem; letter-spacing:2px;">
+            PAGE 100 &nbsp;&nbsp; PRESS 101 FOR NEXT PAGE
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-8">
+                <div style="border: 2px solid var(--teletext-cyan); padding: 1.5rem; margin-bottom: 1rem;">
+                    <p style="color:var(--teletext-yellow); font-size:1.8rem; letter-spacing:2px; text-transform:uppercase;">
+                        SOMETHING HAS GONE TERRIBLY WRONG.
+                    </p>
+                    <p style="color:var(--teletext-white); font-size:1.4rem; line-height:1.6;">
+                        YOU APPEAR TO HAVE STUMBLED INTO 1992.
+                        WE APOLOGISE FOR THE INCONVENIENCE.
+                    </p>
+                    <p style="color:var(--teletext-white); font-size:1.4rem; line-height:1.6;">
+                        OUR ENGINEERS ARE AWARE THAT THE INTERNET
+                        HAS SINCE MOVED ON. THEY ARE CURRENTLY
+                        ON A TEA BREAK AND CANNOT BE DISTURBED.
+                    </p>
+                    <p style="color:var(--teletext-cyan); font-size:1.4rem; line-height:1.6;">
+                        IN THE MEANTIME, PLEASE ENJOY OUR BLOG
+                        PRESENTED IN GLORIOUS TELETEXT FORMAT.
+                        REMOTE CONTROL NOT INCLUDED.
+                    </p>
+                    <p style="color:var(--teletext-white); font-size:1.4rem; line-height:1.6;">
+                        IF YOU ARE READING THIS ON A SMARTPHONE,
+                        WE HAVE NO IDEA WHAT THAT IS.
+                        PLEASE CONSULT YOUR LOCAL LIBRARY.
+                    </p>
+                </div>
+
+
+                <div style="margin-top:1rem;">
+                    <a asp-controller="Posts" asp-action="Index" class="btn btn-primary me-2">
+                        &#9658; READ HEADLINES
+                    </a>
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Posts" asp-action="Create" class="btn btn-secondary">
+                            &#9658; WRITE A POST
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-secondary">
+                            &#9658; REGISTER
+                        </a>
+                    }
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div style="border: 2px solid var(--teletext-yellow); padding: 1rem;">
+                    <div style="background:var(--teletext-yellow); color:var(--teletext-black); padding:0.2rem 0.5rem; margin-bottom:1rem; text-transform:uppercase; letter-spacing:2px;">
+                        QUICK INDEX
+                    </div>
+                    <ul style="list-style:none; padding:0; margin:0;">
+                        <li style="padding: 0.3rem 0; border-bottom: 1px solid var(--teletext-cyan);">
+                            <span style="color:var(--teletext-cyan);">100</span>
+                            &nbsp;&nbsp;
+                            <a asp-controller="Home" asp-action="Index" style="color:var(--teletext-white);">HOME</a>
+                        </li>
+                        <li style="padding: 0.3rem 0; border-bottom: 1px solid var(--teletext-cyan);">
+                            <span style="color:var(--teletext-cyan);">101</span>
+                            &nbsp;&nbsp;
+                            <a asp-controller="Posts" asp-action="Index" style="color:var(--teletext-white);">HEADLINES</a>
+                        </li>
+                        <li style="padding: 0.3rem 0; border-bottom: 1px solid var(--teletext-cyan);">
+                            <span style="color:var(--teletext-cyan);">102</span>
+                            &nbsp;&nbsp;
+                            <a asp-area="Identity" asp-page="/Account/Register" style="color:var(--teletext-white);">REGISTER</a>
+                        </li>
+                        <li style="padding: 0.3rem 0; border-bottom: 1px solid var(--teletext-cyan);">
+                            <span style="color:var(--teletext-cyan);">103</span>
+                            &nbsp;&nbsp;
+                            <a asp-area="Identity" asp-page="/Account/Login" style="color:var(--teletext-white);">LOGIN</a>
+                        </li>
+                        <li style="padding: 0.3rem 0;">
+                            <span style="color:var(--teletext-cyan);">888</span>
+                            &nbsp;&nbsp;
+                            <span style="color:var(--teletext-white);">SUBTITLES</span>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div style="border: 2px solid var(--teletext-magenta); padding: 1rem; margin-top:1rem;">
+                    <div style="background:var(--teletext-magenta); color:var(--teletext-white); padding:0.2rem 0.5rem; margin-bottom:1rem; text-transform:uppercase; letter-spacing:2px;">
+                        BREAKING NEWS
+                    </div>
+                    <p style="color:var(--teletext-white); font-size:1.2rem; line-height:1.6;">
+                        &#9608; LOCAL MAN CONFUSED BY
+                        EXISTENCE OF COLOUR TV.
+                    </p>
+                    <p style="color:var(--teletext-yellow); font-size:1.2rem; line-height:1.6;">
+                        &#9608; ENGINEER STILL ON TEA BREAK.
+                        NO END IN SIGHT.
+                    </p>
+                    <p style="color:var(--teletext-cyan); font-size:1.2rem; line-height:1.6;">
+                        &#9608; INTERNET DECLARED
+                        "PASSING FAD" BY EXPERTS.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div style="display:flex; margin-top:2rem; height:40px;">
+            <div style="flex:1; background:var(--teletext-red); display:flex; align-items:center; justify-content:center; color:var(--teletext-white); font-size:1rem; letter-spacing:1px;">RED</div>
+            <div style="flex:1; background:var(--teletext-green); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">GREEN</div>
+            <div style="flex:1; background:var(--teletext-yellow); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">YELLOW</div>
+            <div style="flex:1; background:var(--teletext-cyan); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">CYAN</div>
+        </div>
+
+    </div>
 </div>
