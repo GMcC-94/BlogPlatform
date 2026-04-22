@@ -1,0 +1,65 @@
+﻿@model BlogPlatform.Models.Post
+
+@{
+    ViewData["Title"] = "EDIT STORY";
+}
+
+<div class="row mt-4">
+    <div class="col-12">
+
+        <!-- Page header -->
+        <div style="background:var(--teletext-cyan); color:var(--teletext-black); padding: 0.5rem 1rem; margin-bottom: 0.2rem;">
+            <span style="font-size:2rem; letter-spacing:4px; text-transform:uppercase;">
+                &#9608;&#9608; EDIT STORY &nbsp; P@(Model.Id + 100) &#9608;&#9608;
+            </span>
+        </div>
+        <div style="background:var(--teletext-yellow); color:var(--teletext-black); padding: 0.2rem 1rem; margin-bottom: 1.5rem; font-size:1.2rem; letter-spacing:2px;">
+            AMEND YOUR TRANSMISSION BELOW
+        </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert" style="border-color:var(--teletext-red) !important; margin-bottom:1rem;">
+                &#9608; TRANSMISSION ERROR — PLEASE CHECK YOUR STORY AND TRY AGAIN.
+            </div>
+        }
+
+        <div style="border: 2px solid var(--teletext-yellow); padding: 1.5rem;">
+            <div style="background:var(--teletext-yellow); color:var(--teletext-black); padding:0.2rem 0.5rem; margin-bottom:1.5rem; text-transform:uppercase; letter-spacing:2px;">
+                STORY AMENDMENT FORM
+            </div>
+
+            <form asp-controller="Posts" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-4">
+                    <label class="form-label">HEADLINE</label>
+                    <input type="text" name="title" class="form-control" value="@Model.Title" />
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">STORY BODY</label>
+                    <textarea name="body" class="form-control" rows="8">@Model.Body</textarea>
+                </div>
+
+                <div style="display:flex; gap:1rem;">
+                    <button type="submit" class="btn btn-primary">
+                        &#9658; TRANSMIT AMENDMENT
+                    </button>
+                    <a asp-controller="Posts" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                        &#9664; CANCEL
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Bottom colour strip -->
+        <div style="display:flex; margin-top:2rem; height:40px;">
+            <div style="flex:1; background:var(--teletext-red); display:flex; align-items:center; justify-content:center; color:var(--teletext-white); font-size:1rem; letter-spacing:1px;">RED</div>
+            <div style="flex:1; background:var(--teletext-green); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">GREEN</div>
+            <div style="flex:1; background:var(--teletext-yellow); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">YELLOW</div>
+            <div style="flex:1; background:var(--teletext-cyan); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">CYAN</div>
+        </div>
+
+    </div>
+</div>
