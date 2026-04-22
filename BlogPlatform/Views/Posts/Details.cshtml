@@ -1,0 +1,117 @@
+﻿@model BlogPlatform.Models.Post
+
+@{
+    ViewData["Title"] = "P" + (Model.Id + 100);
+}
+
+<div class="row mt-4">
+    <div class="col-12">
+
+        <!-- Page header -->
+        <div style="background:var(--teletext-cyan); color:var(--teletext-black); padding: 0.5rem 1rem; margin-bottom: 0.2rem;">
+            <span style="font-size:2rem; letter-spacing:4px; text-transform:uppercase;">
+                &#9608;&#9608; @Model.Title.ToUpper() &nbsp; P@(Model.Id + 100) &#9608;&#9608;
+            </span>
+        </div>
+        <div style="background:var(--teletext-yellow); color:var(--teletext-black); padding: 0.2rem 1rem; margin-bottom: 1.5rem; font-size:1.2rem; letter-spacing:2px;">
+            BY @Model.Author.UserName?.ToUpper() &nbsp;&nbsp; @Model.CreatedAt.ToString("dd MMM yyyy HH:mm")
+        </div>
+
+        <!-- Post body -->
+        <div style="border: 2px solid var(--teletext-cyan); padding: 1.5rem; margin-bottom: 1.5rem;">
+            <p style="color:var(--teletext-white); font-size:1.4rem; line-height:1.8; white-space:pre-wrap;">@Model.Body</p>
+        </div>
+
+        <!-- Author actions -->
+        @if (User.Identity != null && User.Identity.IsAuthenticated &&
+                User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value == Model.AuthorId)
+        {
+            <div style="margin-bottom:1.5rem;">
+                <a asp-controller="Posts" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-secondary me-2">
+                    &#9658; EDIT STORY
+                </a>
+                <a asp-controller="Posts" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                    &#9658; DELETE STORY
+                </a>
+            </div>
+        }
+
+        <a asp-controller="Posts" asp-action="Index" class="btn btn-secondary mb-4">
+            &#9664; BACK TO HEADLINES
+        </a>
+
+        <!-- Comments section -->
+        <div style="background:var(--teletext-cyan); color:var(--teletext-black); padding: 0.3rem 1rem; margin-bottom: 1rem;">
+            <span style="font-size:1.5rem; letter-spacing:3px; text-transform:uppercase;">
+                VIEWER RESPONSES &nbsp; (@Model.Comments.Count)
+            </span>
+        </div>
+
+        @if (!Model.Comments.Any())
+        {
+            <div style="border: 2px solid var(--teletext-cyan); padding: 1rem; color:var(--teletext-white); font-size:1.3rem; margin-bottom:1rem;">
+                &#9608; NO RESPONSES YET. BE THE FIRST TO RESPOND.
+            </div>
+        }
+
+        @foreach (var comment in Model.Comments.OrderBy(c => c.CreatedAt))
+        {
+            <div style="border: 2px solid var(--teletext-cyan); padding: 1rem; margin-bottom: 0.8rem;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+                    <span style="color:var(--teletext-yellow); font-size:1.2rem;">
+                        &#9608; @comment.Author.UserName?.ToUpper()
+                    </span>
+                    <span style="color:var(--teletext-cyan); font-size:1rem;">
+                        @comment.CreatedAt.ToString("dd MMM yyyy HH:mm")
+                    </span>
+                </div>
+                <p style="color:var(--teletext-white); font-size:1.3rem; margin:0;">@comment.Body</p>
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated &&
+                            User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value == comment.AuthorId)
+                {
+                    <div style="margin-top:0.5rem;">
+                        <form asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">DELETE</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+
+        <!-- Add comment form -->
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <div style="border: 2px solid var(--teletext-yellow); padding: 1.5rem; margin-top:1rem;">
+                <div style="background:var(--teletext-yellow); color:var(--teletext-black); padding:0.2rem 0.5rem; margin-bottom:1rem; text-transform:uppercase; letter-spacing:2px;">
+                    SEND A RESPONSE
+                </div>
+                <form asp-controller="Comments" asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="postId" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label class="form-label">YOUR MESSAGE</label>
+                        <textarea name="body" class="form-control" rows="3" placeholder="TYPE YOUR RESPONSE HERE..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">&#9658; SEND RESPONSE</button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div style="border: 2px solid var(--teletext-cyan); padding: 1rem; margin-top:1rem; color:var(--teletext-white); font-size:1.3rem;">
+                &#9608; <a asp-area="Identity" asp-page="/Account/Login">LOGIN</a> TO SEND A RESPONSE.
+            </div>
+        }
+
+        <!-- Bottom colour strip -->
+        <div style="display:flex; margin-top:2rem; height:40px;">
+            <div style="flex:1; background:var(--teletext-red); display:flex; align-items:center; justify-content:center; color:var(--teletext-white); font-size:1rem; letter-spacing:1px;">RED</div>
+            <div style="flex:1; background:var(--teletext-green); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">GREEN</div>
+            <div style="flex:1; background:var(--teletext-yellow); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">YELLOW</div>
+            <div style="flex:1; background:var(--teletext-cyan); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">CYAN</div>
+        </div>
+
+    </div>
+</div>
