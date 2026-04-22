@@ -3,48 +3,340 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BlogPlatform</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BlogPlatform.styles.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - TELETEXT BLOG</title>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.2/dist/cyborg/bootstrap.min.css" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --teletext-black: #000000;
+            --teletext-white: #ffffff;
+            --teletext-cyan: #00ffff;
+            --teletext-yellow: #ffff00;
+            --teletext-magenta: #ff00ff;
+            --teletext-red: #ff0000;
+            --teletext-green: #00ff00;
+            --teletext-blue: #0000ff;
+        }
+
+        * {
+            font-family: 'VT323', monospace !important;
+            font-size: 1.3rem;
+        }
+
+        body {
+            background-color: var(--teletext-black);
+            color: var(--teletext-white);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Scanline overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 2px,
+                rgba(0, 0, 0, 0.15) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--teletext-cyan) !important;
+            border-bottom: 4px solid var(--teletext-yellow);
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar-brand {
+            color: var(--teletext-black) !important;
+            font-size: 2rem !important;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .navbar-brand::after {
+            content: '█';
+            animation: blink 1s step-end infinite;
+            color: var(--teletext-black);
+        }
+
+        @@keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .teletext-page-num {
+            color: var(--teletext-black);
+            font-size: 1.5rem !important;
+            letter-spacing: 2px;
+        }
+
+        .nav-link {
+            color: var(--teletext-black) !important;
+            font-size: 1.3rem !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.2rem 0.8rem !important;
+        }
+
+        .nav-link:hover {
+            background-color: var(--teletext-yellow) !important;
+            color: var(--teletext-black) !important;
+        }
+
+        .nav-link.active {
+            background-color: var(--teletext-magenta) !important;
+            color: var(--teletext-white) !important;
+        }
+
+        /* Page number strip */
+        .teletext-header-strip {
+            background-color: var(--teletext-black);
+            border-bottom: 2px solid var(--teletext-cyan);
+            padding: 0.2rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem !important;
+            color: var(--teletext-cyan);
+            letter-spacing: 3px;
+        }
+
+        /* Main content */
+        .container {
+            padding-top: 1.5rem;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--teletext-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        a {
+            color: var(--teletext-yellow);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--teletext-magenta);
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .btn {
+            font-family: 'VT323', monospace !important;
+            font-size: 1.3rem !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 0 !important;
+        }
+
+        .btn-primary {
+            background-color: var(--teletext-cyan) !important;
+            border-color: var(--teletext-cyan) !important;
+            color: var(--teletext-black) !important;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--teletext-yellow) !important;
+            border-color: var(--teletext-yellow) !important;
+            color: var(--teletext-black) !important;
+        }
+
+        .btn-danger {
+            background-color: var(--teletext-red) !important;
+            border-color: var(--teletext-red) !important;
+            color: var(--teletext-white) !important;
+        }
+
+        .btn-danger:hover {
+            background-color: var(--teletext-magenta) !important;
+            border-color: var(--teletext-magenta) !important;
+        }
+
+        .btn-secondary {
+            background-color: transparent !important;
+            border-color: var(--teletext-white) !important;
+            color: var(--teletext-white) !important;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--teletext-white) !important;
+            color: var(--teletext-black) !important;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--teletext-black) !important;
+            border: 2px solid var(--teletext-cyan) !important;
+            border-radius: 0 !important;
+            margin-bottom: 1rem;
+        }
+
+        .card-body {
+            border-left: 4px solid var(--teletext-yellow);
+        }
+
+        .card-title {
+            color: var(--teletext-yellow) !important;
+            font-size: 1.5rem !important;
+            text-transform: uppercase;
+        }
+
+        .card-text {
+            color: var(--teletext-white) !important;
+        }
+
+        .text-muted {
+            color: var(--teletext-cyan) !important;
+        }
+
+        /* Forms */
+        .form-control {
+            background-color: var(--teletext-black) !important;
+            border: 2px solid var(--teletext-cyan) !important;
+            color: var(--teletext-white) !important;
+            border-radius: 0 !important;
+            font-family: 'VT323', monospace !important;
+            font-size: 1.3rem !important;
+        }
+
+        .form-control:focus {
+            border-color: var(--teletext-yellow) !important;
+            box-shadow: 0 0 0 2px var(--teletext-yellow) !important;
+            background-color: var(--teletext-black) !important;
+            color: var(--teletext-white) !important;
+        }
+
+        .form-label {
+            color: var(--teletext-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        .teletext-footer {
+            background-color: var(--teletext-black);
+            border-top: 4px solid var(--teletext-cyan);
+            color: var(--teletext-white);
+            padding: 1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            margin-top: 3rem;
+            font-size: 1.1rem !important;
+        }
+
+        .teletext-footer span {
+            color: var(--teletext-yellow);
+        }
+
+        /* Alerts */
+        .alert {
+            border-radius: 0 !important;
+            border-left: 4px solid var(--teletext-yellow);
+            background-color: var(--teletext-black) !important;
+            color: var(--teletext-white) !important;
+            border-color: var(--teletext-yellow) !important;
+        }
+
+        /* Colour block strips - decorative */
+        .teletext-colour-strip {
+            display: flex;
+            height: 6px;
+            width: 100%;
+        }
+
+        .teletext-colour-strip div {
+            flex: 1;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BlogPlatform</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
+
+
+    <div class="teletext-colour-strip">
+        <div style="background:var(--teletext-white)"></div>
+        <div style="background:var(--teletext-yellow)"></div>
+        <div style="background:var(--teletext-cyan)"></div>
+        <div style="background:var(--teletext-green)"></div>
+        <div style="background:var(--teletext-magenta)"></div>
+        <div style="background:var(--teletext-red)"></div>
+        <div style="background:var(--teletext-blue)"></div>
+        <div style="background:var(--teletext-black)"></div>
+    </div>
+
+
+    <div class="teletext-header-strip">
+        <span>TELETEXT BLOG &nbsp; P100</span>
+        <span id="teletext-time"></span>
+        <span>BBC1 &nbsp; 888</span>
+    </div>
+
+
+    <nav class="navbar navbar-expand-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CEEFAX</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Posts" asp-action="Index">HEADLINES</a>
+                    </li>
+                </ul>
+                <partial name="_LoginPartial" />
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - BlogPlatform - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+
+    <footer class="teletext-footer">
+        <div>&copy; 2026 <span>TELETEXT BLOG</span> &nbsp;|&nbsp; P100 &nbsp;|&nbsp; PRESS <span>888</span> FOR SUBTITLES</div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('teletext-time').textContent = `${h}:${m}:${s}`;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
