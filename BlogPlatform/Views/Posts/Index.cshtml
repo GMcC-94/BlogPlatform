@@ -1,39 +1,78 @@
 ﻿@model List<BlogPlatform.Models.Post>
 
 @{
-    ViewData["Title"] = "All Posts";
+    ViewData["Title"] = "HEADLINES";
 }
 
-<h2>Blog Posts</h2>
+<div class="row mt-4">
+    <div class="col-12">
 
-@if (User.Identity.IsAuthenticated)
-{
-    <a href="/Posts/Create" class="btn btn-primary mb-3">Write a New Post</a>
-}
 
-@if (Model.Count == 0)
-{
-    <p>No posts yet.</p>
-}
-
-@foreach (var post in Model)
-{
-    <div class="card mb-3">
-        <div class="card-body">
-            <h5 class="card-title">@post.Title</h5>
-            <p class="card-text text-muted">
-                By @post.Author.UserName on @post.CreatedAt.ToString("dd MMM yyyy")
-            </p>
-            <p class="card-text">
-                @if (post.Body.Length > 150)
-                {
-                    @(post.Body.Substring(0, 150) + "...")
-                }
-                else
-                {
-                    @post.Body
-                }
-            </p>
+        <div style="background:var(--teletext-cyan); color:var(--teletext-black); padding: 0.5rem 1rem; margin-bottom: 0.2rem;">
+            <span style="font-size:2rem; letter-spacing:4px; text-transform:uppercase;">
+                &#9608;&#9608; TELETEXT BLOG &nbsp; HEADLINES &nbsp; P101 &#9608;&#9608;
+            </span>
         </div>
+        <div style="background:var(--teletext-yellow); color:var(--teletext-black); padding: 0.2rem 1rem; margin-bottom: 1.5rem; font-size:1.2rem; letter-spacing:2px;">
+            ALL POSTS &nbsp;&nbsp; LATEST FIRST
+        </div>
+
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <a asp-controller="Posts" asp-action="Create" class="btn btn-primary mb-3">
+                &#9658; SUBMIT A STORY
+            </a>
+        }
+
+        @if (Model.Count == 0)
+        {
+            <div style="border: 2px solid var(--teletext-cyan); padding: 1.5rem; color:var(--teletext-white); font-size:1.4rem; letter-spacing:1px;">
+                &#9608; NO STORIES FOUND. OUR CORRESPONDENTS ARE ON TEA BREAK.
+            </div>
+        }
+
+        @foreach (var post in Model)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <h5 class="card-title">
+                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id"
+                               style="color:var(--teletext-yellow); text-decoration:none;">
+                                &#9658; @post.Title.ToUpper()
+                            </a>
+                        </h5>
+                        <span style="color:var(--teletext-cyan); font-size:1rem; white-space:nowrap; margin-left:1rem;">
+                            @post.CreatedAt.ToString("dd MMM yyyy")
+                        </span>
+                    </div>
+                    <p class="card-text text-muted" style="font-size:1.1rem;">
+                        BY @post.Author.UserName?.ToUpper()
+                    </p>
+                    <p class="card-text">
+                        @if (post.Body.Length > 150)
+                        {
+                            @(post.Body.Substring(0, 150) + "...")
+                        }
+                        else
+                        {
+                            @post.Body
+                        }
+                    </p>
+                    <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id" class="btn btn-primary btn-sm">
+                        READ MORE P@(post.Id + 100)
+                    </a>
+                </div>
+            </div>
+        }
+
+        <!-- Bottom colour strip -->
+        <div style="display:flex; margin-top:2rem; height:40px;">
+            <div style="flex:1; background:var(--teletext-red); display:flex; align-items:center; justify-content:center; color:var(--teletext-white); font-size:1rem; letter-spacing:1px;">RED</div>
+            <div style="flex:1; background:var(--teletext-green); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">GREEN</div>
+            <div style="flex:1; background:var(--teletext-yellow); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">YELLOW</div>
+            <div style="flex:1; background:var(--teletext-cyan); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">CYAN</div>
+        </div>
+
     </div>
-}
+</div>
