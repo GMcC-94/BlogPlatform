@@ -68,16 +68,18 @@ dotnet test
 - [x] Posts Index endpoint — list all posts ordered by date
 - [x] Posts Details endpoint — view a single post with comments
 - [x] Posts Create endpoint — authenticated users can create a post
-
-### In Progress
-- [ ] Posts Edit endpoint — author can edit their own post
-- [ ] Posts Delete endpoint — author can delete their own post
-- [ ] Comment endpoint — authenticated users can comment on a post
+- [x] Posts Edit endpoint — author can edit their own post
+- [x] Posts Delete endpoint — author can delete their own post
+- [x] Comment endpoint — authenticated users can comment on a post  
+- [x] Edit unit tests
+- [x] Delete unit tests
+- [x] Comment unit tests
+- [x] Posts Index view
+- [x] Posts Details view (with comments section)
+- [x] Posts Create view
+- [x] Posts Edit view
 
 ### Todo — Backend
-- [ ] Edit unit tests
-- [ ] Delete unit tests
-- [ ] Comment unit tests
 - [ ] Integration tests for all endpoints
 
 ### Todo — Frontend
