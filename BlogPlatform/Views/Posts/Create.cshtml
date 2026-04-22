@@ -5,7 +5,7 @@
 <div class="row mt-4">
     <div class="col-12">
 
-        <!-- Page header -->
+        
         <div style="background:var(--teletext-cyan); color:var(--teletext-black); padding: 0.5rem 1rem; margin-bottom: 0.2rem;">
             <span style="font-size:2rem; letter-spacing:4px; text-transform:uppercase;">
                 &#9608;&#9608; SUBMIT A STORY &nbsp; P102 &#9608;&#9608;
@@ -15,6 +15,7 @@
             ALL STORIES SUBJECT TO EDITORIAL REVIEW. PROBABLY.
         </div>
 
+        @* Validation error block *@
         @if (!ViewData.ModelState.IsValid)
         {
             <div class="alert" style="border-color:var(--teletext-red) !important; margin-bottom:1rem;">
@@ -22,6 +23,7 @@
             </div>
         }
 
+        @* Submission form *@
         <div style="border: 2px solid var(--teletext-yellow); padding: 1.5rem;">
             <div style="background:var(--teletext-yellow); color:var(--teletext-black); padding:0.2rem 0.5rem; margin-bottom:1.5rem; text-transform:uppercase; letter-spacing:2px;">
                 STORY SUBMISSION FORM
@@ -30,16 +32,19 @@
             <form asp-controller="Posts" asp-action="Create" method="post">
                 @Html.AntiForgeryToken()
 
+                
                 <div class="mb-4">
                     <label class="form-label">HEADLINE</label>
                     <input type="text" name="title" class="form-control" placeholder="ENTER YOUR HEADLINE..." />
                 </div>
 
+               
                 <div class="mb-4">
                     <label class="form-label">STORY BODY</label>
                     <textarea name="body" class="form-control" rows="8" placeholder="TYPE YOUR STORY HERE..."></textarea>
                 </div>
 
+                
                 <div style="display:flex; gap:1rem;">
                     <button type="submit" class="btn btn-primary">
                         &#9658; TRANSMIT STORY
@@ -51,7 +56,7 @@
             </form>
         </div>
 
-        <!-- Bottom colour strip -->
+        @* Teletext colour strip *@
         <div style="display:flex; margin-top:2rem; height:40px;">
             <div style="flex:1; background:var(--teletext-red); display:flex; align-items:center; justify-content:center; color:var(--teletext-white); font-size:1rem; letter-spacing:1px;">RED</div>
             <div style="flex:1; background:var(--teletext-green); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">GREEN</div>
