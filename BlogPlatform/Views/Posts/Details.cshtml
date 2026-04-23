@@ -7,7 +7,7 @@
 <div class="row mt-4">
     <div class="col-12">
 
-        <!-- Page header -->
+        
         <div style="background:var(--teletext-cyan); color:var(--teletext-black); padding: 0.5rem 1rem; margin-bottom: 0.2rem;">
             <span style="font-size:2rem; letter-spacing:4px; text-transform:uppercase;">
                 &#9608;&#9608; @Model.Title.ToUpper() &nbsp; P@(Model.Id + 100) &#9608;&#9608;
@@ -17,12 +17,12 @@
             BY @Model.Author.UserName?.ToUpper() &nbsp;&nbsp; @Model.CreatedAt.ToString("dd MMM yyyy HH:mm")
         </div>
 
-        <!-- Post body -->
+        
         <div style="border: 2px solid var(--teletext-cyan); padding: 1.5rem; margin-bottom: 1.5rem;">
             <p style="color:var(--teletext-white); font-size:1.4rem; line-height:1.8; white-space:pre-wrap;">@Model.Body</p>
         </div>
 
-        <!-- Author actions -->
+        
         @if (User.Identity != null && User.Identity.IsAuthenticated &&
                 User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value == Model.AuthorId)
         {
@@ -40,7 +40,7 @@
             &#9664; BACK TO HEADLINES
         </a>
 
-        <!-- Comments section -->
+        
         <div style="background:var(--teletext-cyan); color:var(--teletext-black); padding: 0.3rem 1rem; margin-bottom: 1rem;">
             <span style="font-size:1.5rem; letter-spacing:3px; text-transform:uppercase;">
                 VIEWER RESPONSES &nbsp; (@Model.Comments.Count)
@@ -70,17 +70,24 @@
                 @if (User.Identity != null && User.Identity.IsAuthenticated &&
                             User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value == comment.AuthorId)
                 {
-                    <div style="margin-top:0.5rem;">
-                        <form asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" method="post" style="display:inline;">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-danger btn-sm">DELETE</button>
-                        </form>
-                    </div>
+                    @if (User.Identity != null && User.Identity.IsAuthenticated &&
+                                User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value == comment.AuthorId)
+                    {
+                        <div style="margin-top:0.5rem; display:flex; gap:0.5rem;">
+                            <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id" class="btn btn-secondary btn-sm">
+                                EDIT
+                            </a>
+                            <form asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger btn-sm">DELETE</button>
+                            </form>
+                        </div>
+                    }
                 }
             </div>
         }
 
-        <!-- Add comment form -->
+        
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
             <div style="border: 2px solid var(--teletext-yellow); padding: 1.5rem; margin-top:1rem;">
@@ -105,7 +112,7 @@
             </div>
         }
 
-        <!-- Bottom colour strip -->
+        
         <div style="display:flex; margin-top:2rem; height:40px;">
             <div style="flex:1; background:var(--teletext-red); display:flex; align-items:center; justify-content:center; color:var(--teletext-white); font-size:1rem; letter-spacing:1px;">RED</div>
             <div style="flex:1; background:var(--teletext-green); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">GREEN</div>
