@@ -1,21 +1,35 @@
-using System.Diagnostics;
+using BlogPlatform.Data;
 using BlogPlatform.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace BlogPlatform.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        /*
+         * @params none
+         * @returns ViewResult with a list of the 2 most recent posts
+         */
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var recentPosts = await _context.Posts
+                .Include(p => p.Author)
+                .OrderByDescending(p => p.CreatedAt)
+                .Take(2)
+                .ToListAsync();
+
+            return View(recentPosts);
         }
 
         public IActionResult Privacy()
