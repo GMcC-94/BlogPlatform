@@ -48,6 +48,21 @@ namespace BlogPlatform.Controllers
             return RedirectToAction("Details", "Posts", new { id = postId });
         }
 
+        /*
+         * @params int id - the ID of the comment to edit
+         * @returns ViewResult with the Comment model if the current user is the author,
+         *          NotFoundResult if the comment does not exist,
+         *          ForbidResult if the current user is not the author
+         */
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment == null) return NotFound();
+            if (comment.AuthorId != User.FindFirstValue(ClaimTypes.NameIdentifier)) return Forbid();
+
+            return View(comment);
+        }
 
         /*
           * @params int id - the ID of the comment to edit
