@@ -298,6 +298,13 @@ The `ImagePath` field exists on the `Post` model and is included in the migratio
 
 **Fix:** Set `OnDelete(DeleteBehavior.NoAction)` on the `Comment → Post` relationship in `OnModelCreating`.
 
+### Post delete FK constraint error
+**Issue:** Deleting a post with comments from other users threw a SQL FK constraint error.
+
+**Cause:** `OnDelete(DeleteBehavior.NoAction)` on the Comment → Post relationship prevents SQL Server from cascading the delete to comments automatically.
+
+**Fix:** Explicitly load and delete all comments on the post before removing the post itself in `DeleteConfirmed`.
+
 ### ApplicationUser migration
 **Issue:** EF could not create a `DbContext` when switching from `IdentityUser` to `ApplicationUser`.
 
