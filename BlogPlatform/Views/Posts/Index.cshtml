@@ -47,7 +47,7 @@
                         </span>
                     </div>
                     <p class="card-text text-muted" style="font-size:1.1rem;">
-                        BY @post.Author.UserName?.ToUpper()
+                        BY @post.Author.DisplayName?.ToUpper()
                     </p>
                     <p class="card-text">
                         @if (post.Body.Length > 150)
@@ -66,7 +66,7 @@
             </div>
         }
 
-        <!-- Bottom colour strip -->
+       
         <div style="display:flex; margin-top:2rem; height:40px;">
             <div style="flex:1; background:var(--teletext-red); display:flex; align-items:center; justify-content:center; color:var(--teletext-white); font-size:1rem; letter-spacing:1px;">RED</div>
             <div style="flex:1; background:var(--teletext-green); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">GREEN</div>

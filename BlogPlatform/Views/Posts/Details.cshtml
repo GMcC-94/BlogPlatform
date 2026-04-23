@@ -14,7 +14,7 @@
             </span>
         </div>
         <div style="background:var(--teletext-yellow); color:var(--teletext-black); padding: 0.2rem 1rem; margin-bottom: 1.5rem; font-size:1.2rem; letter-spacing:2px;">
-            BY @Model.Author.UserName?.ToUpper() &nbsp;&nbsp; @Model.CreatedAt.ToString("dd MMM yyyy HH:mm")
+            BY @Model.Author.DisplayName?.ToUpper() &nbsp;&nbsp; @Model.CreatedAt.ToString("dd MMM yyyy HH:mm")
         </div>
 
         
@@ -59,7 +59,7 @@
             <div style="border: 2px solid var(--teletext-cyan); padding: 1rem; margin-bottom: 0.8rem;">
                 <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
                     <span style="color:var(--teletext-yellow); font-size:1.2rem;">
-                        &#9608; @comment.Author.UserName?.ToUpper()
+                        &#9608; @comment.Author.DisplayName?.ToUpper()
                     </span>
                     <span style="color:var(--teletext-cyan); font-size:1rem;">
                         @comment.CreatedAt.ToString("dd MMM yyyy HH:mm")

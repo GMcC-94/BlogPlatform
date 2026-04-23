@@ -1,4 +1,73 @@
-﻿@page
-@model BlogPlatform.Views.Posts.DeleteModel
+﻿@model BlogPlatform.Models.Post
+
 @{
+    ViewData["Title"] = "DELETE STORY";
 }
+
+<div class="row mt-4">
+    <div class="col-12">
+
+        
+        <div style="background:var(--teletext-red); color:var(--teletext-white); padding: 0.5rem 1rem; margin-bottom: 0.2rem;">
+            <span style="font-size:2rem; letter-spacing:4px; text-transform:uppercase;">
+                &#9608;&#9608; DELETE STORY &nbsp; P@(Model.Id + 100) &#9608;&#9608;
+            </span>
+        </div>
+        <div style="background:var(--teletext-yellow); color:var(--teletext-black); padding: 0.2rem 1rem; margin-bottom: 1.5rem; font-size:1.2rem; letter-spacing:2px;">
+            WARNING — THIS ACTION CANNOT BE UNDONE
+        </div>
+
+        
+        <div style="border: 2px solid var(--teletext-red); padding: 1.5rem; margin-bottom:1.5rem;">
+            <p style="color:var(--teletext-yellow); font-size:1.6rem; letter-spacing:2px; text-transform:uppercase;">
+                &#9608; ARE YOU SURE YOU WANT TO DELETE THIS STORY?
+            </p>
+            <p style="color:var(--teletext-white); font-size:1.3rem;">
+                THIS TRANSMISSION WILL BE PERMANENTLY REMOVED FROM THE TELETEXT ARCHIVE.
+            </p>
+
+            <div style="border: 2px solid var(--teletext-cyan); padding: 1rem; margin-top:1rem;">
+                <p style="color:var(--teletext-cyan); font-size:1.2rem; margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:1px;">
+                    HEADLINE
+                </p>
+                <p style="color:var(--teletext-yellow); font-size:1.5rem; margin-bottom:1rem;">
+                    @Model.Title.ToUpper()
+                </p>
+                <p style="color:var(--teletext-cyan); font-size:1.2rem; margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:1px;">
+                    AUTHOR
+                </p>
+                <p style="color:var(--teletext-white); font-size:1.3rem; margin-bottom:1rem;">
+                    @Model.Author.UserName?.ToUpper()
+                </p>
+                <p style="color:var(--teletext-cyan); font-size:1.2rem; margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:1px;">
+                    TRANSMITTED
+                </p>
+                <p style="color:var(--teletext-white); font-size:1.3rem; margin-bottom:0;">
+                    @Model.CreatedAt.ToString("dd MMM yyyy HH:mm")
+                </p>
+            </div>
+        </div>
+
+       
+        <div style="display:flex; gap:1rem;">
+            <form asp-controller="Posts" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-danger">
+                    &#9658; CONFIRM DELETE
+                </button>
+            </form>
+            <a asp-controller="Posts" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                &#9664; CANCEL
+            </a>
+        </div>
+
+        
+        <div style="display:flex; margin-top:2rem; height:40px;">
+            <div style="flex:1; background:var(--teletext-red); display:flex; align-items:center; justify-content:center; color:var(--teletext-white); font-size:1rem; letter-spacing:1px;">RED</div>
+            <div style="flex:1; background:var(--teletext-green); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">GREEN</div>
+            <div style="flex:1; background:var(--teletext-yellow); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">YELLOW</div>
+            <div style="flex:1; background:var(--teletext-cyan); display:flex; align-items:center; justify-content:center; color:var(--teletext-black); font-size:1rem; letter-spacing:1px;">CYAN</div>
+        </div>
+
+    </div>
+</div>
