@@ -49,7 +49,7 @@ namespace BlogPlatform.Tests
             
             using var context = GetInMemoryContext();
 
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
 
             context.Posts.AddRange(
@@ -82,7 +82,7 @@ namespace BlogPlatform.Tests
             
             using var context = GetInMemoryContext();
 
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
             context.Posts.Add(new Post
             {
@@ -173,7 +173,7 @@ namespace BlogPlatform.Tests
             
             using var context = GetInMemoryContext();
 
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
             context.Posts.Add(new Post
             {
@@ -225,8 +225,8 @@ namespace BlogPlatform.Tests
             
             using var context = GetInMemoryContext();
 
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
-            var otherUser = new IdentityUser { Id = "user2", UserName = "otheruser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
+            var otherUser = new ApplicationUser { Id = "user2", UserName = "otheruser" };
             context.Users.AddRange(author, otherUser);
             context.Posts.Add(new Post
             {
@@ -259,7 +259,7 @@ namespace BlogPlatform.Tests
             
             using var context = GetInMemoryContext();
 
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
             context.Posts.Add(new Post
             {
@@ -297,7 +297,7 @@ namespace BlogPlatform.Tests
             
             using var context = GetInMemoryContext();
 
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
             context.Posts.Add(new Post
             {
@@ -329,8 +329,8 @@ namespace BlogPlatform.Tests
             
             using var context = GetInMemoryContext();
 
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
-            var otherUser = new IdentityUser { Id = "user2", UserName = "otheruser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
+            var otherUser = new ApplicationUser { Id = "user2", UserName = "otheruser" };
             context.Users.AddRange(author, otherUser);
             context.Posts.Add(new Post
             {
@@ -359,7 +359,7 @@ namespace BlogPlatform.Tests
         public async Task Delete_Get_ReturnsViewResult_WhenUserIsAuthor()
         {
             using var context = GetInMemoryContext();
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
             context.Posts.Add(new Post
             {
@@ -399,8 +399,8 @@ namespace BlogPlatform.Tests
         public async Task Delete_Get_ReturnsForbid_WhenUserIsNotAuthor()
         {
             using var context = GetInMemoryContext();
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
-            var otherUser = new IdentityUser { Id = "user2", UserName = "otheruser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
+            var otherUser = new ApplicationUser { Id = "user2", UserName = "otheruser" };
             context.Users.AddRange(author, otherUser);
             context.Posts.Add(new Post
             {
@@ -424,7 +424,7 @@ namespace BlogPlatform.Tests
         public async Task DeleteConfirmed_DeletesPostAndRedirectsToIndex_WhenUserIsAuthor()
         {
             using var context = GetInMemoryContext();
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
             context.Posts.Add(new Post
             {
@@ -464,8 +464,8 @@ namespace BlogPlatform.Tests
         public async Task DeleteConfirmed_ReturnsForbid_WhenUserIsNotAuthor()
         {
             using var context = GetInMemoryContext();
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
-            var otherUser = new IdentityUser { Id = "user2", UserName = "otheruser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
+            var otherUser = new ApplicationUser { Id = "user2", UserName = "otheruser" };
             context.Users.AddRange(author, otherUser);
             context.Posts.Add(new Post
             {

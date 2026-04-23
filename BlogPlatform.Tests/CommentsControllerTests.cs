@@ -48,7 +48,7 @@ namespace BlogPlatform.Tests
         public async Task Create_SavesCommentAndRedirectsToDetails_WhenValid()
         {
             using var context = GetInMemoryContext();
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
             context.Posts.Add(new Post
             {
@@ -93,7 +93,7 @@ namespace BlogPlatform.Tests
         public async Task Create_RedirectsToDetails_WithoutSaving_WhenBodyIsEmpty()
         {
             using var context = GetInMemoryContext();
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
             context.Posts.Add(new Post
             {
@@ -121,7 +121,7 @@ namespace BlogPlatform.Tests
         public async Task Edit_UpdatesCommentAndRedirectsToDetails_WhenUserIsAuthor()
         {
             using var context = GetInMemoryContext();
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
             context.Posts.Add(new Post { Id = 1, Title = "Test Post", Body = "Test Body", CreatedAt = DateTime.UtcNow, AuthorId = "user1" });
             context.Comments.Add(new Comment { Id = 1, Body = "Old Comment", CreatedAt = DateTime.UtcNow, AuthorId = "user1", PostId = 1 });
@@ -156,8 +156,8 @@ namespace BlogPlatform.Tests
         public async Task Edit_ReturnsForbid_WhenUserIsNotAuthor()
         {
             using var context = GetInMemoryContext();
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
-            var otherUser = new IdentityUser { Id = "user2", UserName = "otheruser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
+            var otherUser = new ApplicationUser { Id = "user2", UserName = "otheruser" };
             context.Users.AddRange(author, otherUser);
             context.Posts.Add(new Post { Id = 1, Title = "Test Post", Body = "Test Body", CreatedAt = DateTime.UtcNow, AuthorId = "user1" });
             context.Comments.Add(new Comment { Id = 1, Body = "Test Comment", CreatedAt = DateTime.UtcNow, AuthorId = "user1", PostId = 1 });
@@ -175,7 +175,7 @@ namespace BlogPlatform.Tests
         public async Task Delete_DeletesCommentAndRedirectsToDetails_WhenUserIsAuthor()
         {
             using var context = GetInMemoryContext();
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
             context.Users.Add(author);
             context.Posts.Add(new Post { Id = 1, Title = "Test Post", Body = "Test Body", CreatedAt = DateTime.UtcNow, AuthorId = "user1" });
             context.Comments.Add(new Comment { Id = 1, Body = "Test Comment", CreatedAt = DateTime.UtcNow, AuthorId = "user1", PostId = 1 });
@@ -210,8 +210,8 @@ namespace BlogPlatform.Tests
         public async Task Delete_ReturnsForbid_WhenUserIsNotAuthor()
         {
             using var context = GetInMemoryContext();
-            var author = new IdentityUser { Id = "user1", UserName = "testuser" };
-            var otherUser = new IdentityUser { Id = "user2", UserName = "otheruser" };
+            var author = new ApplicationUser { Id = "user1", UserName = "testuser" };
+            var otherUser = new ApplicationUser { Id = "user2", UserName = "otheruser" };
             context.Users.AddRange(author, otherUser);
             context.Posts.Add(new Post { Id = 1, Title = "Test Post", Body = "Test Body", CreatedAt = DateTime.UtcNow, AuthorId = "user1" });
             context.Comments.Add(new Comment { Id = 1, Body = "Test Comment", CreatedAt = DateTime.UtcNow, AuthorId = "user1", PostId = 1 });
