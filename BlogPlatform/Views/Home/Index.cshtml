@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<BlogPlatform.Models.Post>
+@{
     ViewData["Title"] = "HOME";
 }
 
@@ -98,6 +99,32 @@
                     </ul>
                 </div>
 
+                <div style="border: 2px solid var(--teletext-magenta); padding: 1rem; margin-top:1rem;">
+                    <div style="background:var(--teletext-magenta); color:var(--teletext-white); padding:0.2rem 0.5rem; margin-bottom:1rem; text-transform:uppercase; letter-spacing:2px;">
+                        LATEST STORIES
+                    </div>
+                    @if (Model == null || !Model.Any())
+                    {
+                        <p style="color:var(--teletext-white); font-size:1.2rem;">
+                            &#9608; NO STORIES YET.
+                        </p>
+                    }
+                    else
+                    {
+                        @foreach (var post in Model)
+                        {
+                            <div style="border-bottom: 1px solid var(--teletext-magenta); padding-bottom:0.5rem; margin-bottom:0.5rem;">
+                                <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id"
+                                   style="color:var(--teletext-yellow); font-size:1.2rem; text-decoration:none;">
+                                    &#9658; @post.Title.ToUpper()
+                                </a>
+                                <p style="color:var(--teletext-cyan); font-size:1rem; margin:0;">
+                                    BY @post.Author.DisplayName?.ToUpper() &nbsp; @post.CreatedAt.ToString("dd MMM yyyy")
+                                </p>
+                            </div>
+                        }
+                    }
+                </div>
 
                 <div style="border: 2px solid var(--teletext-magenta); padding: 1rem; margin-top:1rem;">
                     <div style="background:var(--teletext-magenta); color:var(--teletext-white); padding:0.2rem 0.5rem; margin-bottom:1rem; text-transform:uppercase; letter-spacing:2px;">
